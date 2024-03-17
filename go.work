@@ -1,0 +1,8 @@
+go 1.21.4
+
+use (
+	./unit_testing
+	./api-gateway
+	./service-employee
+	./service-user
+)

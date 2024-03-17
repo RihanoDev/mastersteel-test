@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  api_gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    networks:
+      - mynetwork
+    depends_on:
+      - postgresql
+  
+  user:
+    build: ./service-user
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    networks:
+      - mynetwork
+    depends_on:
+      - postgresql
+
+  employee:
+    build: ./service-employee
+    ports:
+      - "8082:8082"
+    restart: on-failure
+    networks:
+      - mynetwork
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: api_gateway
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+    restart: on-failure
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
